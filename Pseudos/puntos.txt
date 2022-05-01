@@ -1,0 +1,28 @@
+PUNTO 1
+    Subrutina delete (PTR1, PTR2, tail1, tail2)
+        p1 <- PTR1   
+        before <-  nulo
+        MQ(p1 <> nulo) hacer
+            before <- p1
+            p2 <- PTR2
+            MQ(p2 <> nulo) hacer
+                Si (p1.data = p2.data) entonces
+                    Si(p1 = PTR1)
+                        PTR1 <- p1.next
+                        p1.delete
+                        p1 <- PTR1
+                    Sino si (p1.next = nulo)
+                            p1.delete
+                            before.next <- nulo
+                            p1 <- before                       
+                    Sino
+                        before.next <- p1.next
+                        p1.delete
+                        P1 <- before                        
+                    Finsi
+                Finsi
+                p2 <- p2.next
+            FinMQ
+            p1 <- p1.next            
+        FinMQ
+    FinSubrutina                        

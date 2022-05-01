@@ -1,0 +1,187 @@
+PUNTO 1
+INICIO
+	Buffer Ganan
+	Dispositivo Disco
+	Reg_Ganan
+		NroCra      N[2]
+        NombreJ     X[20]
+        NroCaballo  N[2]
+        Distancia   N[2]
+        Tiempo      N[1]
+    FinBuffer
+
+    Buffer Caballos
+	Dispositivo Disco
+	Reg_Caballos
+		NumeroC     N[2]
+        NombreC     X[20]
+        Peso        N[2]
+        Raza        N[2]        
+    FinBuffer
+
+    Buffer Velocidades
+    Dispositivo Disco
+    Reg_Velocidades
+        CaballoNro  N[2]
+        Velocidad   N[3]
+        Ncarrera    N[2]
+    FinBuffer
+
+    Buffer Vtotales
+    Dispositivo Disco
+    Reg_Vtotales
+        CaballoNN   N[2]
+        Vtotal      N[3]
+    FinBuffer
+
+    Abrir Ganan(Lectura), Caballos(Lectura)
+    Abrir Velocidades(Escritura)
+
+    MQ (Not(EoF(Caballos))) Hacer
+       Leer Reg_Caballos
+        CaballoNro <- NumeroC
+        Vel <- 0, Carrera <- 1
+        MQ (Not(EoF(Ganan))) Hacer
+            Leer Reg_Ganan
+            Si (CaballoNro = NroCaballo AND NroCra = Carrera ) Entonces
+                Vel <- Vel + (Distancia / Tiempo)
+            Sino
+                Leer Reg_Ganan
+            FinSi
+        FinMQ
+        Cerrar Ganan
+        Velocidad <- Vel
+        Ncarrera <- Carrera
+        Escribir Reg_Velocidades
+        Leer Reg_Ganan
+        Carrera <- Carrera + 1
+    FinMQ
+
+    Cerrar Caballos, Velocidades
+    Abrir Caballos(Lectura), Velocidades (Lectura)
+    Abrir Vtotales (Escritura)
+
+    MQ(Not(EoF(Caballos))) Hacer
+        Leer Reg_Caballos
+        CaballoNN <- NumeroC
+        VelocidadT <- 0
+        MQ(Not(EoF(Velocidades))) Hacer
+            Leer Reg_Velocidades
+            Si(CaballoNN = CaballoNro) Entonces
+                VelocidadT <- VelocidadT + Velocidad
+            FinSi
+        FinMQ
+        Vtotal <- VelocidadT
+        Escribir Reg_Vtotales
+    FinMQ
+
+    Cerrar Caballos, Velocidades, Vtotales
+    Abrir Vtotales(Lectura), Caballos(Lectura)
+    
+    Leer Reg_Vtotales
+    Menor <- Vtotal, Name <- 0
+    MQ(Not(EoF(Vtotales))) Hacer
+        Si(Vtotal < Menor) Entonces
+            Menor <- Vtotal
+            Name <- CaballoNN
+        Sino
+            Leer Reg_Vtotales
+        FinSi
+        MQ(Not(EoF(Caballos))) Hacer
+                Leer Reg_Caballos
+                Si(Name = NumeroC) Entonces
+                    Escribir NumeroC, NombreC, Peso, Raza
+                FinSi
+        FinMQ
+    FinMQ
+    Cerrar Vtotales, Caballos
+FIN
+
+
+
+PUNTO 2
+INICIO
+    Buffer Asignaturas
+    Dispositivo Disco
+    Estructura Indexada
+    Reg_Asignaturas
+        CodigoA     N[10]
+        NombreA     X[15]   
+        Curso       N[3]
+        Creditos    N[2]
+        CCprofeA    N[10]
+    Llave Principal NombreA
+    FinBuffer
+
+    Buffer Profes
+    Dispositivo Disco
+    Estructura Indexada
+    Reg_Profes
+        NombreP     X[15]
+        CedulaP     N[10]
+        FechaI      N[15]
+        FechaN      N[15]
+        Categoria   X[15]
+    Llave Principal CedulaP
+    FinBuffer
+
+    Caracter CC
+    Escribir "Digite Cedula Profesor"
+    Leer CC
+    
+    Abrir Asignaturas(Lectura), Profes(Lectura)
+
+    Si(Leer Reg_Profes CedulaP = CC) Entonces
+        Si(CC = Valido) Entonces
+            Escribir NombreP, CedulaP, FechaI, FechaN, Categoria
+        Sino
+            Escribir "Cedula no encontrada"
+        FinSi
+    FinSi
+
+    MQ(Not(EoF(Asignaturas))) Hacer
+        Leer Reg_Asignaturas
+        Si(CedulaP = CCprofeA) Entonces
+            Escribir "Este profesor dicta", NombreA
+        FinSi
+    FinMQ
+
+    CC <- 0, CT <- 0, CA <- 0, CAY <- 0
+    MQ(Not(EoF(Profes))) Hacer
+        Leer Reg_Profes
+        DD (Categoria):
+            "Catedratico"
+                CC <- CC + 1
+            "Titular"
+                CT <- CT + 1
+            "Asociado"
+                CA <- CA + 1
+            "Ayudante"
+                CAY <- CAY + 1
+        FinDD
+    FinMQ
+
+    Si(CC > CT AND CC > CA AND CC > CAY) Entonces
+        Escribir "Catedratico tiene mayor personal"
+    Sino
+        Si(CT > CC AND CT > CA AND CT > CAY) Entonces
+            Escribir "Titular tiene mayor personal"
+        Sino
+            Si(CA > CC AND CA > CT AND CA > CAY) Entonces
+                Escribir "Asociado tiene mayor personal"
+            Sino
+                Si(CAY > CC AND CAY > CT AND CAY > CA) Entonces
+                    Entonces "Ayudante tiene mayor personal"
+                FinSi
+            FinSi
+        FinSi
+    FinSi
+    Escribir "Categoria Catedratico tiene mayor sueldo"
+    Cerrar Asignaturas, Profes
+FIN
+
+PUNTO 3
+Respuesta = A
+
+:)
+

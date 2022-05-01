@@ -1,0 +1,28 @@
+PUNTO 2
+Subrrutina delete (PTR, equal)
+    p <- PTR, found <- falso, aux <- p
+        Hacer {
+            Si (p.data = equal) entonces
+                Si (p = PTR) entonces
+                    nodoxd <- p
+                    Hacer {
+                        nodoxd <- nodoxd.link
+                    } Hasta (nodoxd.link = PTR)
+                    nodoxd.link <- p.link
+                    Borrar p
+                    PTR <- nodoxd.link
+                    found <- Verdadero
+                Sino
+                    aux.link <- p.link
+                    Borrar p 
+                    found <- Verdadero                   
+                Finsi                
+            Sino
+                aux <- p
+                p <- p.link
+            Finsi
+        } Hasta (found = Verdadero)
+FinSubrrutina
+
+PUNTO 3
+    
