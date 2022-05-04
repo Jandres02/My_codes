@@ -1,0 +1,39 @@
+Subrutina atender (Lista, num_caja)  
+    p <- Lista.head
+    Si(num_caja = 1)
+        p <- Lista.head
+    Sino
+        Para (i <- 1, hasta i = (num_caja - 1), incremento 1)
+            p <- p.next
+        FinPara
+    FinSi
+    q <- p.child
+    MQ(q.child <> nulo)
+        p.caja <- p.caja + q.monto
+        p.espera <- p.espera - 1
+        p.child <- q.child
+        q.child <- nulo
+        q <- p.child
+    FinMQ
+FinSub
+
+Subrutina discapacitados (Lista)
+    caja <- Lista.head
+    cliente <- Lista.child    
+    MQ (caja.next <> nulo)
+        MQ(cliente.child <> nulo)
+            DD cliente.disc
+                0:
+                    
+                1:
+                    caja.money <- caja.money + cliente.monto
+                    caja.clients <- caja.clients - 1
+                    caja.child <- cliente.child
+                    cliente.child <- nulo
+                    cliente <- caja.child
+            FinDD
+        FinMQ
+        caja <- caja.next
+    FinMQ
+FinSub
+                
