@@ -1,0 +1,18 @@
+pila[] pila 2
+tope2 <- 0
+subrutina intercambio(pila, pila2)
+    last <- pila.tope
+    topeaux <- tope
+    MQ(tope <> 1) hacer
+        canPila(pila, tope, tam, elem)
+        inPila(pila2, tope2, tam2, elem)
+    FinMQ
+    first <- tope
+    canPila(pila, tope, tam, elem)
+    inPila(pila, tope, tam, last)
+    MQ(tam <> topeaux)
+        canPila(pila2, topeaux, tam, elem2)
+        inPila(pila, topeaux, tam, elem2)
+    FinMQ
+    inPila(pila, topeaux, tam, last)
+FinSubrutina
