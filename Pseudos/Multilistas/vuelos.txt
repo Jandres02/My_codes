@@ -1,0 +1,194 @@
+Subrutina busqueda (PTR, flight)
+	t <- true 
+	m <- PTR
+		MQ(P <> nulo && t = true) 
+			Si (m.numv = flight) 
+				t <- false 
+			Finsi
+		m <- m.link3
+		FinMQ
+	Si(t = true)
+		Escribir "No se encontró el vuelo"
+	Sino 
+		Escribir "Vuelo encontrado"
+	Finsi
+FinSub
+
+
+Subrutina borrar_flight (PTR, flight)
+	f <- PTR
+		MQ(f <> nulo)
+			aux <- f
+			Si(flight == f.numv) 
+				Si(f.numv == PTR.numv) 
+					Link4 <- nulo
+					Link5 <- nulo
+					PTR <- f.link3
+					Borrar(f)
+					PTR <- f					
+				Sino 
+					Link4 <- nulo
+					Link5 <- nulo
+					AnteP.link3 <- P.link3
+					Borrar (P)					
+				Finsi
+			Finsi
+			f <- aux.link3
+		FinMQ
+FinSub  
+
+
+Subrutina delete_Pasajero (PTR, pass)
+	q <- PTR, r <- q, t <- q
+	auxR <- nulo
+	auxT <- nulo
+	L <- true
+		MQ(r <> nulo || L == true) 
+			r <- r.link2
+			t <- t.link5
+			Si(r.link2 == nulo) 
+				Escribir "no se encontraron pasajeros"
+			Sino 
+				MQ(r <> nulo) 
+					auxR <- r
+					Si (r.info == pass) 
+						auxR.link2 <- r.link2
+						Borrar (r)
+						L <- false
+					Finsi
+					r <- auxR.link2
+				FinMQ
+			Finsi
+			
+			Si(t.link5 == nulo) 
+				Escribir "no hay pasajeros en espera"
+			Sino
+				MQ (t <> nulo) 
+					auxT <- t
+					Si (t.info == pasajero) 
+						auxT.link5 <- t.link5
+						Borrar (t)
+						L <- false
+					Finsi
+					t <- auxT.link5
+				FinMQ
+			Finsi
+		r <- r.link3
+		FinMQ
+FinSub
+		
+		
+Subrutina Buscar_Pass (PTR)	
+	q <- PTR, r <- q, s <- q
+	L <- true
+		MQ(P <> nulo || L = true) 
+			r <- r.link2
+			s <- s.link5
+			Si(r.link2 == nulo) 
+				Escribir "no se encontraron pasajeros"
+			Sino 
+				MQ(Q <> nulo) 
+					Si(r.info == pass) 
+						Escribir "Está en el vuelo" + q.info1
+						L <- false
+					Finsi
+					r <- r.link2
+				FinMQ
+			Finsi
+			
+			Si(s.link5 == nulo) 
+				Escribir "no hay pasajeros en espera"
+			Sino
+				MQ (s <> nulo)
+					Si (s.info == pass) 
+						Escribir "Está en el vuelo" q.info1
+						L <- false
+					Finsi
+					s <- s.link5
+				FinMQ
+			Finsi
+		q <- q.link3
+		FinMQ
+FinSub
+					
+		
+Subrutina Crear_Vuelo (PTR, inf)
+	P <- PTR
+	Si (PTR = nulo) ent
+		Obtener(Q)
+		Q.Info1 <- inf
+		Q <- PTR
+		Q.link3 <- nulo
+		
+	Sino 
+		MQ(P <> nulo) hacer
+			P <- P.link3
+		FinMQ
+		
+		Obtener(Q)
+		Q.Info1 <- inf
+		P.link3 <- Q
+		Q.link3 <- nulo		
+	Finsi
+FinSub
+
+Subrutina CrearPasajero (PTR, vuelo, infp)
+	P <- PTR
+	Tail <- nulo
+	Q <- nulo
+	MQ(P <> nulo) hacer
+		Si (P.numv = vuelo) ent
+			Q <- P.link2
+				MQ (Q <> nulo) hacer
+					Q <- Q.link2
+					Tail <- Q
+				FinMQ
+				Obtener (K)
+				K.info2 <- infp
+				Tail.next <- K
+				K.next <- nulo
+		Finsi 
+	FinMQ
+Finsub
+
+Subrutina PasajeroCola (PTR, vuelo, infp)
+	P <- PTR
+	Tail <- nulo
+	Q <- nulo
+	MQ(P <> nulo) hacer
+		Si (P.numv = vuelo) ent
+			Q <- P.link5
+				MQ (Q <> nulo) hacer
+					Q <- Q.link5
+					Tail <- Q
+				FinMQ
+				Obtener (K)
+				K.info5 <- infp
+				Tail.next <- K
+				K.next <- nulo
+		Finsi 
+	FinMQ
+Finsub
+
+Subrutina ColaBuscar (PTR, inf, vuelo)
+	P <- PTR
+	Q <- P.link2
+	Boolean K
+	K <- true
+		Si(Q = nulo) ent
+			Escribir "no hay pasajeros en cola"
+		Sino 
+			MQ(Q <> nulo o K = true) hacer
+				Si(Q.info2 = inf) ent
+					K <- false
+				Finsi
+				Q <- Q.link2
+			FinMQ
+		Finsi
+		
+		Si (K = false) ent
+			Escribir "Pasajero en cola, encontrado"
+		Sino 
+			Escribir "No se encontró pasajero en cola"
+		Finsi
+FinSub

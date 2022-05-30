@@ -1,0 +1,162 @@
+Subrutina BuscarEquipo (PTR, codigo)
+	p <- PTR
+	Hacer
+		Si(p.cod = codigo)
+			escribir p
+		sino 
+			p <- p.RLinkeq
+		FinSi
+	Hasta(p = final)
+FinSub
+
+
+Subrutina eliminarJugador (PTR, codigo, n, PTR2)
+	p <- PTR
+	Hacer
+		Si(p.cod = codigo)
+			PTR2 <- p.linkjug
+	        q <- PTR2
+			Hacer 
+				si(q.linkjug.num = n)
+					Si(q = PTR2)
+						p.linkjug <- q.linkjuagdores
+						q.linkjug <- null
+					sino
+						t <- q.linkjug
+						q.linkjug <- t.linkjug
+						t <- null
+					Fin_Si
+				sino 
+					q <- q.linkjug
+				Fin_Si
+			Hasta (q =PTR2)
+		Sino 
+			p<- p.RLinkeq
+		FinSi
+	Hasta (p = final)
+FinSubRutina
+
+
+
+
+Subrutina BuscarJugador (PTR, codigo, n, PTR2)
+	p <- PTR
+	Hacer
+		Si(P.cod = codigo)
+			PTR2 <- p.linkjug
+	        q <- PTR2
+			Hacer
+				si(q.num = n)
+					return q
+				sino 
+					q <- q.linkjug
+				Fin_Si
+			Hasta (q =PTR2)
+		sino 
+			p<- p.RLinkeq
+		FinSi
+	Hasta(p = final)
+FinSubRutina
+
+
+
+Subrutina EncontrarEquipo (PTR, codigo)
+	p <- PTR
+	Hacer
+		Si(p.cod = codigo)
+			Si( p= PTR )
+				p.LLinkeq.Rlinkeq<-null
+				PTR<-p.RLinkeq
+				p.Rlinkeq<-null
+			Sino
+				Si (P = final)
+					end <- p.prev
+				    end.RLinkeq <- null
+				    p.LLinkeq <- null 
+				    p <- end
+				Sino
+				    p.LLinkeq.RLinkeq <- p.RLinkeq
+        			p.next.LLinkeq <-p.LLinkeq
+				    p.LLinkeq <- nulo
+				    p.RLinkeq <- nulo
+				FinSi
+			FinSi
+		Sino 
+			p<- p.RLinkeq
+		FinSi
+	Hasta (p = final)
+FinSubRutina
+
+
+
+Subrutina team (PTR, codigo)
+	p <- PTR
+		switch <- 0
+		MQ(p.cod<codigo)
+			Si(p.Rlinkeq<-null)
+		        switch<-1
+		    FinSi
+		    p<-p.RLinkeq
+		FinMQ
+
+		q.cod <- codigo 
+		Si(p = PTR)
+			q.RLinkeq <- p 
+			p.LLinkeq <- q 
+			PTR <- q
+		Sino  
+			q.RLinkeq <- p 
+			q.prevE<- p.LLinkeq
+			p.prevE<-q
+			p.LLinkeq.Rlinkeq<-q
+
+			Si(switch=1)    
+				q.LLinkeq <- end 
+				end.RLinkeq <- q
+				end <- q  
+			FinSi
+		FinSi
+FinSubRutina
+
+
+SubRutina jugadorAscendente(PTR, equipo, jugador)
+	p <- PTR
+	found <- f
+	Hacer
+		Si(p.cod = equipo.cod)
+			Escribir "encontrado"
+			found <- true
+		Sino 
+			p <- p.RLinkeq
+		FinSi
+	Hasta (p = final || found = true)
+
+	Si(found = false) 
+		Escribir "no se encontró el equipo"
+	Sino
+		q <- p.linkjug
+		added <- f
+		Si(q.linkjug > jugador.linkjug)
+			jugador.linkjug <- q
+			p.linkjug <- jugador
+		sino
+			Hacer
+				Si(jugador.num < q.linkjug.num)
+					jugador.linkjug <- q.linkjug
+					q.linkjug <- jugador
+					si(q = p.linkjug)
+					si(q.linkjug = p.linkjug)
+						final = q
+					Finsi
+					added <- true
+				sino
+					q = q.linkjug
+				Finsi
+			Hasta(q = p.linkjug | added = true)
+			Si(added = f)
+				jugador.linkjug <- end.linkjug
+				end.linkjug <- jugador
+			FinSi
+		FinSi
+	FinSi
+FinSubRutina
